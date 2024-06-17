@@ -24,7 +24,8 @@ const Register = () => {
     e.preventDefault();
     try {
       const res = await axios.post("http://localhost:8080/api/auth/register", inputs);
-      navigate("/");
+      console.log(res)
+      navigate("/login");
     } catch (err) {
       setError(err.response.data);
     }
@@ -59,7 +60,7 @@ const Register = () => {
           onChange={handleChange}
         />
         <button onClick={handleSubmit}>Login</button>
-        {err && <p>{err}</p>}
+        {err && <p className='error'>{err}</p>}
         <span>
           ¿Yá tienes una cuenta? <Link to="/login">Iniciar Sesión</Link>
         </span>

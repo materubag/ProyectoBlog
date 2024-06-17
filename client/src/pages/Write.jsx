@@ -1,58 +1,199 @@
-import React, {useState} from 'react';
-import ReactQuill, { displayName } from "react-quill";
+import React, { useState, useContext } from "react";
+import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
+import moment from "moment";
+import { AuthContext } from "../context/authContext";
 
 const Write = () => {
-  const [value, setValue] = useState('');
-  console.log(value);
+  const { currentUser } = useContext(AuthContext);
+  const state = useLocation().state;
+  axios.defaults.withCredentials = true;
+  const [title, setTitle] = useState(state?.title || "");
+  const [content, setContent] = useState(state?.desc || "");
+  const [file, setFile] = useState(null);
+  const [cat, setCat] = useState(state?.cat || "");
+  const [img, setImg] = useState(state?.img || "");
+
+  const navigate = useNavigate();
+
+  const upload = async () => {
+    try {
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        const res = await axios.post("http://localhost:8080/api/upload", formData);
+        return res.data;
+      } else {
+        return null;
+      }
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  };
+
+  const deleteImage = async () => {
+    try {
+      if (img) {
+        await axios.delete(`http://localhost:8080/api/delete-image/${encodeURIComponent(img)}`);
+        console.log("Imagen eliminada del servidor:", img);
+      }
+    } catch (err) {
+      console.error("Error al eliminar la imagen del servidor:", err);
+    }
+  };
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+
+    if (!currentUser) {
+      alert("Debe iniciar sesión para publicar un post.");
+      navigate("/login");
+      return;
+    }
+
+    await deleteImage();
+
+    const imgUrl = await upload();
+    const finalImg = imgUrl || img;
+
+    try {
+      state
+        ? await axios.put(`http://localhost:8080/api/posts/${state.id}`, {
+          title,
+          desc: content,
+          cat,
+          img: finalImg,
+        })
+        : await axios.post(`http://localhost:8080/api/posts/`, {
+          title,
+          desc: content,
+          cat,
+          img: finalImg,
+          date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+        });
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <div className='add'>
+    <div className="add">
       <div className="content">
-        <input type="text" placeholder='Titulo'/>
+        <input
+          type="text"
+          value={title}
+          placeholder="Title"
+          onChange={(e) => setTitle(e.target.value)}
+        />
         <div className="editorContainer">
-        <ReactQuill className="editor" theme="snow" value={value} onChange={setValue}/>
+          <ReactQuill
+            value={content}
+            onChange={setContent}
+            formats={Write.formats}
+          />
         </div>
       </div>
       <div className="menu">
         <div className="item">
-          <h1>Publicar</h1>
-          <span>
-            <b>Estado:</b> Borrador
-          </span>
-          <span>
-            <b>Visibilidad:</b> Publico
-          </span>
-          <input style={{display:"none"}} type='file' name='' id='file'></input>
-          <label className='file' htmlFor='file'>Subir Imagen</label>
+          <h1>Publicación</h1>
+          <input
+            style={{ display: "none" }}
+            type="file"
+            id="file"
+            name=""
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+          <label className="file" htmlFor="file">
+            Subir imagen
+          </label>
           <div className="buttons">
-            <button>Guardar como borrador</button>
-            <button>Actualizar</button>
+            <button className="save">Save as a draft</button>
+            <button onClick={handleClick}>Publicar</button>
           </div>
         </div>
         <div className="item">
-          <h1>Categoria</h1>
+          <h1>Categorias</h1>
           <div className="cat">
-          <input type='radio' name='cat' value="arte" id='arte'></input>
-          <label htmlFor='arte'>Arte</label></div>
+            <input
+              type="radio"
+              checked={cat === 'cine'}
+              name="cat"
+              value="cine"
+              id="cine"
+              onChange={(e) => setCat(e.target.value)}
+            />
+            <label htmlFor="art">Cine</label>
+          </div>
           <div className="cat">
-          <input type='radio' name='cat' value="tecnologia" id='tecnologia'></input>
-          <label htmlFor='tecnologia'>Tecnologia</label></div>
+            <input
+              type="radio"
+              checked={cat === 'art'}
+              name="cat"
+              value="art"
+              id="art"
+              onChange={(e) => setCat(e.target.value)}
+            />
+            <label htmlFor="art">Arte</label>
+          </div>
           <div className="cat">
-          <input type='radio' name='cat' value="entretenimiento" id='entretenimiento'></input>
-          <label htmlFor='entretenimiento'>Entretenimiento</label></div>
+            <input
+              type="radio"
+              checked={cat === 'science'}
+              name="cat"
+              value="science"
+              id="science"
+              onChange={(e) => setCat(e.target.value)}
+            />
+            <label htmlFor="science">Ciencia</label>
+          </div>
           <div className="cat">
-          <input type='radio' name='cat' value="deporte" id='deporte'></input>
-          <label htmlFor='deporte'>Deporte</label></div>
+            <input
+              type="radio"
+              checked={cat === 'music'}
+              name="cat"
+              value="music"
+              id="music"
+              onChange={(e) => setCat(e.target.value)}
+            />
+            <label htmlFor="music">Música</label>
+          </div>
           <div className="cat">
-          <input type='radio' name='cat' value="historia" id='historia'></input>
-          <label htmlFor='historia'>Historia</label></div>
+            <input
+              type="radio"
+              checked={cat === 'technology'}
+              name="cat"
+              value="technology"
+              id="technology"
+              onChange={(e) => setCat(e.target.value)}
+            />
+            <label htmlFor="technology">Tecnologia</label>
+          </div>
           <div className="cat">
-          <input type='radio' name='cat' value="ciencia" id='ciencia'></input>
-          <label htmlFor='ciencia'>Ciencia</label></div>
+            <input
+              type="radio"
+              checked={cat === 'sports'}
+              name="cat"
+              value="sports"
+              id="sports"
+              onChange={(e) => setCat(e.target.value)}
+            />
+            <label htmlFor="sports">Deportes</label>
+          </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
+
+Write.formats = [
+  'header', 'font', 'size',
+  'bold', 'italic', 'underline', 'strike', 'blockquote',
+  'list', 'bullet', 'indent',
+  'link', 'image', 'video'
+];
 
 export default Write;

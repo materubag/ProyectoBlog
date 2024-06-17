@@ -9,9 +9,13 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Single from "./pages/Single";
 import Write from "./pages/Write";
+import PostByUser from "./pages/PostByUser";
 import Profile from "./pages/Profile";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import EditProfile from "./pages/EditProfile";
+import ModRegister from "./pages/ModRegister";
+import Moderation from "./pages/Moderation";
 import "./style.scss";
 
 const Layout = () => {
@@ -45,11 +49,27 @@ const router = createBrowserRouter([
         path: "/profile",
         element: <Profile />,
       },
+      {
+        path: "/editprofile",
+        element: <EditProfile/>,
+      },
+      {
+        path: "/moderation",
+        element: <Moderation/>,
+      },
+      {
+        path: "/user/:userId/posts",
+        element: <PostByUser />,
+      },
     ],
   },
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/modregister",
+    element: <ModRegister />,
   },
   {
     path: "/login",

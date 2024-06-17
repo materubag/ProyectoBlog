@@ -39,19 +39,19 @@ const Login = () => {
         <input
           required
           type="text"
-          placeholder="username"
+          placeholder="usuario"
           name="username"
           onChange={handleChange}
         />
         <input
           required
           type="password"
-          placeholder="password"
+          placeholder="contraseña"
           name="password"
           onChange={handleChange}
         />
         <button onClick={handleSubmit}>Login</button>
-        {err && <p>{err}</p>}
+        {err && <p className='error'>{err}</p>}
         <span>
         ¿Aún no tienes una cuenta? <Link to="/register">Registrate</Link>
         </span>
