@@ -12,6 +12,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import {FRONT_URL} from "./config.js";
 
+const PORT = process.env.PORT || 8080;
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -61,6 +62,6 @@ app.get("/test", (req, res) => {
     res.json("Funciona ");
 });
 
-app.listen(8080, () => {
+app.listen(PORT, () => {
     console.log("Conectado!!!!!!!");
 });
