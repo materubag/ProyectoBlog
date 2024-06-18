@@ -62,6 +62,9 @@ const Navbar = () => {
         <Link className='Link' to='/?cat=sports' onClick={() => handleCatChange('sports')}>
           <h6>Deportes</h6>
         </Link>
+          <Link className='Link' to='/?cat=technology' onClick={() => handleCatChange('technology')}>
+           <h6>Tecnologia</h6>
+          </Link>
             <div className='vertical-line'></div>
             {currentUser && currentUser.mod === 1 && (
               <Link className='Link' to='/moderation'>
@@ -119,7 +122,9 @@ const Navbar = () => {
           <Link className='Link' to='/?cat=deportes' onClick={closeDropdown}>
             <h6>Deportes</h6>
           </Link>
-          
+          <Link className='Link' to='/?cat=technology' onClick={() => handleCatChange('technology')}>
+            <h6>Tecnologia</h6>
+        </Link>
         </div>
       </div>
     </div>
