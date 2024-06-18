@@ -33,6 +33,7 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4754398BA287499E91E3FEDE9A1F47AE }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7ED18A61995F43078382E6AB75DBBCB5 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_337D4250E0224E50B172EDA757AA3515 }}
+          enable-AzPSSession: true
 
       - name: Desplegar cliente en Azure Web App
         uses: azure/webapps-deploy@v2
@@ -67,6 +68,7 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4754398BA287499E91E3FEDE9A1F47AE }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7ED18A61995F43078382E6AB75DBBCB5 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_337D4250E0224E50B172EDA757AA3515 }}
+          enable-AzPSSession: true
 
       - name: Desplegar API en Azure Web App
         uses: azure/webapps-deploy@v2
