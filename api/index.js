@@ -62,13 +62,16 @@ app.use('/api/modders', modderRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/comments', commentRoutes);
 
+// Servir archivos estáticos del cliente
+app.use(express.static(path.join(__dirname, '../client/build')));
+
 app.get('/test', (req, res) => {
   res.json('Funciona');
 });
 
 // Maneja todas las rutas para una SPA
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 
 app.listen(PORT, () => {
