@@ -6,6 +6,9 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  id-token: write
+
 jobs:
   construir-y-desplegar-cliente:
     runs-on: ubuntu-latest
