@@ -37,8 +37,6 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7ED18A61995F43078382E6AB75DBBCB5 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_337D4250E0224E50B172EDA757AA3515 }}
           enable-AzPSSession: true
-          auth-type: interactive
-
       - name: Desplegar cliente en Azure Web App
         uses: azure/webapps-deploy@v2
         with:
@@ -73,7 +71,6 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7ED18A61995F43078382E6AB75DBBCB5 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_337D4250E0224E50B172EDA757AA3515 }}
           enable-AzPSSession: true
-          auth-type: interactive
 
       - name: Desplegar API en Azure Web App
         uses: azure/webapps-deploy@v2
