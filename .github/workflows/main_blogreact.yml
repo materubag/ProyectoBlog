@@ -20,7 +20,7 @@ jobs:
           node-version: '14'
 
       - name: Instalar dependencias del cliente
-        working-directory: ProyectoBlogt
+        working-directory: ProyectoBlog
         run: npm install
 
       - name: Construir cliente
@@ -32,7 +32,7 @@ jobs:
         with:
           app-name: 'blogreact-client'  # Nombre de la aplicación en Azure para el cliente
           slot-name: 'Production'  # Nombre del slot en Azure si aplica
-          package: ProyectoBlog/client
+          package: ProyectoBlog
 
   construir-y-desplegar-api:
     runs-on: ubuntu-latest
