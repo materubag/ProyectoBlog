@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/authContext";
 import { Link, useNavigate } from "react-router-dom";
+import {BACK_URL} from "../config.js";
 
 const EditProfile = () => {
   const { currentUser } = useContext(AuthContext);
@@ -24,7 +25,7 @@ const EditProfile = () => {
       if (file) {
         const formData = new FormData();
         formData.append("file", file);
-        const res = await axios.post("http://localhost:8080/api/upload", formData);
+        const res = await axios.post(`${BACK_URL}/api/upload`, formData);
         return res.data;
       } else {
         return null;
@@ -38,7 +39,7 @@ const EditProfile = () => {
   const deleteImage = async () => {
     try {
       if (img) {
-        await axios.delete(`http://localhost:8080/api/delete-image/${encodeURIComponent(img)}`);
+        await axios.delete(`${BACK_URL}/api/delete-image/${encodeURIComponent(img)}`);
         console.log("Imagen eliminada del servidor:", img);
       }
     } catch (err) {
@@ -64,7 +65,7 @@ const EditProfile = () => {
         await deleteImage();
       }
 
-      const res = await axios.put(`http://localhost:8080/api/auth/updateProfile/${currentUser.id}`, data, {
+      const res = await axios.put(`${BACK_URL}/api/auth/updateProfile/${currentUser.id}`, data, {
         withCredentials: true
       });
       setMsg(res.data);

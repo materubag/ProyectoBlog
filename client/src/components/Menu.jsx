@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import {BACK_URL} from "../config.js";
 
 const Menu = ({ cat, excludeId }) => {
   const [posts, setPosts] = useState([]);
@@ -8,7 +9,7 @@ const Menu = ({ cat, excludeId }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/posts/?cat=${cat}`);
+        const res = await axios.get(`${BACK_URL}/api/posts/?cat=${cat}`);
         setPosts(res.data);
       } catch (err) {
         console.log(err);

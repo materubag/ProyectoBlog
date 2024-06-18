@@ -55,16 +55,15 @@ const Navbar = () => {
         <Link className='Link' to='/?cat=music' onClick={() => handleCatChange('music')}>
           <h6>Música</h6>
         </Link>
-        {/* Agrega más enlaces aquí usando la misma lógica */}
         <Link className='Link' to='/?cat=science' onClick={() => handleCatChange('science')}>
           <h6>Ciencia</h6>
         </Link>
         <Link className='Link' to='/?cat=sports' onClick={() => handleCatChange('sports')}>
           <h6>Deportes</h6>
         </Link>
-          <Link className='Link' to='/?cat=technology' onClick={() => handleCatChange('technology')}>
-           <h6>Tecnologia</h6>
-          </Link>
+        <Link className='Link' to='/?cat=technology' onClick={() => handleCatChange('technology')}>
+          <h6>Tecnologia</h6>
+        </Link>
             <div className='vertical-line'></div>
             {currentUser && currentUser.mod === 1 && (
               <Link className='Link' to='/moderation'>
@@ -123,7 +122,7 @@ const Navbar = () => {
             <h6>Deportes</h6>
           </Link>
           <Link className='Link' to='/?cat=technology' onClick={() => handleCatChange('technology')}>
-            <h6>Tecnologia</h6>
+          <h6>Tecnologia</h6>
         </Link>
         </div>
       </div>

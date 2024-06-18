@@ -8,6 +8,7 @@ import axios from "axios";
 import moment from "moment";
 import { AuthContext } from "../context/authContext";
 import DOMPurify from "dompurify";
+import {BACK_URL} from "../config.js";
 
 const Single = () => {
   const [post, setPost] = useState({});
@@ -25,7 +26,7 @@ const Single = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/posts/${postId}`);
+        const res = await axios.get(`${BACK_URL}/api/posts/${postId}`);
         setPost(res.data);
       } catch (err) {
         console.log(err);
@@ -37,7 +38,7 @@ const Single = () => {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/comments/${postId}`);
+        const res = await axios.get(`${BACK_URL}/api/comments/${postId}`);
         setComments(res.data);
       } catch (err) {
         console.error('Error fetching comments:', err);
@@ -48,7 +49,7 @@ const Single = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/posts/${postId}`);
+      await axios.delete(`${BACK_URL}/api/posts/${postId}`);
       navigate("/");
     } catch (err) {
       console.log("Error deleting post: " + err);
@@ -67,7 +68,7 @@ const Single = () => {
     try {
       const formattedDate = moment().format('YYYY-MM-DD HH:mm:ss');
 
-      await axios.post('http://localhost:8080/api/comments', {
+      await axios.post(`${BACK_URL}/api/comments`, {
         comentario: newComment,
         date: formattedDate,
         postid: postId,
@@ -75,7 +76,7 @@ const Single = () => {
 
       setNewComment('');
 
-      const updatedComments = await axios.get(`http://localhost:8080/api/comments/${postId}`);
+      const updatedComments = await axios.get(`${BACK_URL}/api/comments/${postId}`);
       setComments(updatedComments.data);
 
     } catch (err) {
@@ -85,7 +86,7 @@ const Single = () => {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      await axios.delete(`http://localhost:8080/api/comments/${commentId}`);
+      await axios.delete(`${BACK_URL}/api/comments/${commentId}`);
       setComments(comments.filter(comment => comment.id !== commentId));
     } catch (err) {
       console.error('Error deleting comment:', err);
@@ -106,12 +107,12 @@ const Single = () => {
     try {
       const formattedDate = moment().format('YYYY-MM-DD HH:mm:ss');
       const edit = "Editado: ";
-      await axios.put(`http://localhost:8080/api/comments/${editedComment.id}`, {
+      await axios.put(`${BACK_URL}/api/comments/${editedComment.id}`, {
         comentario: edit + editedComment.comentario,
         date: formattedDate,
       });
 
-      const updatedComments = await axios.get(`http://localhost:8080/api/comments/${postId}`);
+      const updatedComments = await axios.get(`${BACK_URL}/api/comments/${postId}`);
       setComments(updatedComments.data);
 
       setEditMode(false);
@@ -154,12 +155,12 @@ const Single = () => {
   return (
     <div className="single">
       <div className="content">
-        <img src={`../upload/${post.img}`} alt="" />
+        <img src={`${BACK_URL}/images/${post.img}`} alt="" />
         <div className="user">
 
           {post && post.visible === 1 && (<div>
             <Link to={`/user/${post.uid}/posts`}>
-              <img src={post.userImg ? `../upload/${post.userImg}` : DefaultUserImg} alt="" />
+              <img src={post.userImg ? `${BACK_URL}/images/${post.userImg}` : DefaultUserImg} alt="" />
             </Link>
             <div className="info">
               <Link to={`/user/${post.uid}/posts`} className="username-link">
@@ -202,7 +203,7 @@ const Single = () => {
               <div className="comment-item" key={comment.id}>
                 <div className="user">
                   <Link to={`/user/${comment.uid}/posts`}>
-                    <img src={comment.userImg ? `../upload/${comment.userImg}` : DefaultUserImg} alt="" />
+                    <img src={comment.userImg ? `${BACK_URL}/images/${comment.userImg}` : DefaultUserImg} alt="" />
                   </Link>
                   <div className="info">
                     <Link to={`/user/${comment.uid}/posts`} className="username-link">

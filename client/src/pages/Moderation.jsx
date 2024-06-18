@@ -4,6 +4,7 @@ import DefaultUserImg from "../img/default.png";
 import moment from "moment";
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from "../context/authContext";
+import {BACK_URL} from "../config.js";
 
 const Moderation = () => {
   const [invisibleUsers, setInvisibleUsers] = useState([]);
@@ -28,7 +29,7 @@ const Moderation = () => {
 
   const fetchInvisibleUsers = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/api/modders/invisible-users', {
+      const res = await axios.get(`${BACK_URL}/api/modders/invisible-users`, {
         withCredentials: true
       });
       setInvisibleUsers(res.data);
@@ -40,7 +41,7 @@ const Moderation = () => {
 
   const fetchInvisiblePosts = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/api/modders/invisible-posts', {
+      const res = await axios.get('/api/modders/invisible-posts', {
         withCredentials: true
       });
       setInvisiblePosts(res.data);
@@ -52,7 +53,7 @@ const Moderation = () => {
 
   const fetchInvisibleComments = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/api/modders/invisible-comments', {
+      const res = await axios.get(`${BACK_URL}/api/modders/invisible-comments`, {
         withCredentials: true
       });
       setInvisibleComments(res.data);
@@ -64,7 +65,7 @@ const Moderation = () => {
 
   const fetchModReq = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/api/modders/mod-req', {
+      const res = await axios.get(`${BACK_URL}/api/modders/mod-req`, {
         withCredentials: true
       });
       setModReq(res.data);
@@ -76,7 +77,7 @@ const Moderation = () => {
 
   const approveUser = async (userId) => {
     try {
-      await axios.put(`http://localhost:8080/api/modders/update-visible-user/${userId}`, null, {
+      await axios.put(`${BACK_URL}/api/modders/update-visible-user/${userId}`, null, {
         withCredentials: true
       });
       fetchInvisibleUsers();
@@ -87,7 +88,7 @@ const Moderation = () => {
 
   const approvePost = async (postId) => {
     try {
-      await axios.put(`http://localhost:8080/api/modders/update-visible-post/${postId}`, null, {
+      await axios.put(`${BACK_URL}/api/modders/update-visible-post/${postId}`, null, {
         withCredentials: true
       });
       fetchInvisiblePosts();
@@ -98,7 +99,7 @@ const Moderation = () => {
 
   const approveComment = async (commentId) => {
     try {
-      await axios.put(`http://localhost:8080/api/modders/update-visible-comment/${commentId}`, null, {
+      await axios.put(`${BACK_URL}/api/modders/update-visible-comment/${commentId}`, null, {
         withCredentials: true
       });
       fetchInvisibleComments();
@@ -109,7 +110,7 @@ const Moderation = () => {
 
   const approveModReq = async (userId) => {
     try {
-      await axios.put(`http://localhost:8080/api/modders/update-mod/${userId}`, null, {
+      await axios.put(`${BACK_URL}/api/modders/update-mod/${userId}`, null, {
         withCredentials: true
       });
       fetchModReq();
@@ -134,7 +135,7 @@ const Moderation = () => {
             {invisibleUsers.map(user => (
               <div className="user" key={user.id}>
                 <Link to={`/user/${user.id}/posts`}>
-                  <img src={user.userImg ? `../upload/${user.userImg}` : DefaultUserImg} alt="" />
+                  <img src={user.userImg ? `${BACK_URL}/images/${user.userImg}` : DefaultUserImg} alt="" />
                 </Link>
                 <div className="info">
                   <Link to={`/user/${user.id}/posts`} className="username-link">
@@ -158,7 +159,7 @@ const Moderation = () => {
                 <div className="post" key={post.id}>
                   <div className="img">
                     {post.img && (
-                      <img src={`../upload/${post.img}`} alt="" />
+                      <img src={`${BACK_URL}/images/${post.img}`} alt="" />
                     )}
                   </div>
                   <div className="content">
@@ -180,7 +181,7 @@ const Moderation = () => {
                 <div className="comment-item" key={comment.id}>
                   <div className="user">
                     <Link to={`/user/${comment.uid}/posts`}>
-                      <img src={comment.userImg ? `../upload/${comment.userImg}` : DefaultUserImg} alt="" />
+                      <img src={comment.userImg ? `${BACK_URL}/images/${comment.userImg}` : DefaultUserImg} alt="" />
                     </Link>
                     <div className="info">
                       <Link to={`/user/${comment.uid}/posts`} className="username-link">
@@ -207,7 +208,7 @@ const Moderation = () => {
             {modReq.map(req => (
               <div className="mod-request" key={req.id}>
                 <Link to={`/user/${req.id}/posts`}>
-                  <img src={req.userImg ? `../upload/${req.userImg}` : DefaultUserImg} alt="" />
+                  <img src={req.userImg ? `${BACK_URL}/images/${req.userImg}` : DefaultUserImg} alt="" />
                 </Link>
                 <div className="info">
                   <Link to={`/user/${req.id}/posts`} className="username-link">

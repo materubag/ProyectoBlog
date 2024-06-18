@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import {BACK_URL} from "../config.js";
 
 const PostByUser = () => {
   const [posts, setPosts] = useState([]);
@@ -9,7 +10,7 @@ const PostByUser = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/posts/user/${userId}`);
+        const res = await axios.get(`${BACK_URL}/api/posts/user/${userId}`);
         setPosts(res.data);
         console.log(res.data);
       } catch (err) {
@@ -44,7 +45,7 @@ const PostByUser = () => {
         {posts.map((post) => (
           <div className="post" key={post.id}>
             <div className="img">
-            <img src={`/upload/${post.img}`} alt="" />
+            <img src={`${BACK_URL}/images/${post.img}`} alt="" />
             </div>
             <div className="content">
               <Link className="link" to={`/post/${post.id}`}>

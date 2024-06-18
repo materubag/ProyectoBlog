@@ -5,6 +5,7 @@ import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { AuthContext } from "../context/authContext";
+import {BACK_URL} from "../config.js";
 
 const Write = () => {
   const { currentUser } = useContext(AuthContext);
@@ -23,7 +24,7 @@ const Write = () => {
       if (file) {
         const formData = new FormData();
         formData.append("file", file);
-        const res = await axios.post("http://localhost:8080/api/upload", formData);
+        const res = await axios.post(`${BACK_URL}/api/upload`, formData);
         return res.data;
       } else {
         return null;
@@ -37,7 +38,7 @@ const Write = () => {
   const deleteImage = async () => {
     try {
       if (img) {
-        await axios.delete(`http://localhost:8080/api/delete-image/${encodeURIComponent(img)}`);
+        await axios.delete(`${BACK_URL}/api/delete-image/${encodeURIComponent(img)}`);
         console.log("Imagen eliminada del servidor:", img);
       }
     } catch (err) {
@@ -61,13 +62,13 @@ const Write = () => {
 
     try {
       state
-        ? await axios.put(`http://localhost:8080/api/posts/${state.id}`, {
+        ? await axios.put(`${BACK_URL}/api/posts/${state.id}`, {
           title,
           desc: content,
           cat,
           img: finalImg,
         })
-        : await axios.post(`http://localhost:8080/api/posts/`, {
+        : await axios.post(`${BACK_URL}/api/posts/`, {
           title,
           desc: content,
           cat,

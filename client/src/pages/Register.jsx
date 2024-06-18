@@ -3,7 +3,7 @@ import Logo from '../img/OIG.png';
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import axios from 'axios';
-
+import {BACK_URL} from "../config.js";
 
 const Register = () => {
 
@@ -23,7 +23,7 @@ const Register = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:8080/api/auth/register", inputs);
+      const res = await axios.post(`${BACK_URL}/api/auth/register`, inputs);
       console.log(res)
       navigate("/login");
     } catch (err) {

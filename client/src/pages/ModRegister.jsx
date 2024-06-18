@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Logo from '../img/OIG.png';
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import {BACK_URL} from "../config.js";
 
 const ModRegister = () => {
   const [username, setUsername] = useState("");
@@ -24,7 +24,7 @@ const ModRegister = () => {
 
     try {
       setMsg(null);
-      const res = await axios.put("http://localhost:8080/api/auth/updateTelf", data);
+      const res = await axios.put(`${BACK_URL}/api/auth/updateTelf`, data);
       setMsg(res.data);
       setErr(null); // Clear error if successful
     } catch (err) {

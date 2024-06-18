@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
+import {BACK_URL} from "../config.js";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -11,7 +12,7 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/posts${cat}`);
+        const res = await axios.get(`${BACK_URL}/api/posts${cat}`);
         setPosts(res.data);
       } catch (err) {
         setError(err);
@@ -33,7 +34,6 @@ const Home = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, [cat]);
-
   return (
     <div className="home">
       <div className="posts">
@@ -43,7 +43,7 @@ const Home = () => {
             {isMobile ? (
               <div className="mobile-layout">
                 <div className="img">
-                  <img src={`../upload/${post.img}`} alt="" />
+                  <img src={`${BACK_URL}/images/${post.img}`} alt="" />
                 </div>
                 <div className="content">
                   <Link className="link" to={`/post/${post.id}`}>
@@ -58,7 +58,7 @@ const Home = () => {
             ) : (
               <div className="desktop-layout">
                 <div className="img">
-                  <img src={`../upload/${post.img}`} alt="" />
+                  <img src={`${BACK_URL}/images/${post.img}`} alt="" />
                 </div>
                 <div className="content">
                   <Link className="link" to={`/post/${post.id}`}>
