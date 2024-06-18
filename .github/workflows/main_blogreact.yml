@@ -42,8 +42,8 @@ jobs:
       - name: Desplegar cliente en Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'blogreact-client'  # Nombre de la aplicación en Azure para el cliente
-          slot-name: 'Production'  # Nombre del slot en Azure si aplica
+          app-name: 'blogreact-client' 
+          slot-name: 'Production'  
           package: client
 
   construir-y-desplegar-api:
@@ -77,6 +77,6 @@ jobs:
       - name: Desplegar API en Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'blogreact-api'  # Nombre de la aplicación en Azure para la API
-          slot-name: 'Production'  # Nombre del slot en Azure si aplica
+          app-name: 'blogreact-api'  
+          slot-name: 'Production'  
           package: api
