@@ -8,6 +8,7 @@ on:
 
 permissions:
   id-token: write
+  contents: read
 
 jobs:
   construir-y-desplegar-cliente:
@@ -33,10 +34,11 @@ jobs:
       - name: Iniciar sesión en Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4754398BA287499E91E3FEDE9A1F47AE }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7ED18A61995F43078382E6AB75DBBCB5 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_337D4250E0224E50B172EDA757AA3515 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
           enable-AzPSSession: true
+
       - name: Desplegar cliente en Azure Web App
         uses: azure/webapps-deploy@v2
         with:
@@ -67,9 +69,9 @@ jobs:
       - name: Iniciar sesión en Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4754398BA287499E91E3FEDE9A1F47AE }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7ED18A61995F43078382E6AB75DBBCB5 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_337D4250E0224E50B172EDA757AA3515 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
           enable-AzPSSession: true
 
       - name: Desplegar API en Azure Web App
