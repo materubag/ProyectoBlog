@@ -289,6 +289,18 @@ html {
         box-sizing: border-box;
         /* Incluye el padding en el ancho total */
         width: auto;
+
+        .Link {
+          text-decoration: none;
+          color: black;
+          font-size: 17px;
+          transition: color 0.3s;
+          text-decoration: underline;
+
+          h6 {
+            margin: 0;
+          }
+        }
       }
 
       .write img,
@@ -366,6 +378,19 @@ html {
             margin-bottom: 10px;
           }
         }
+
+        .warning {
+          color: #ffffff;
+          background-color: #f34b4b;
+          text-align: center;
+          padding: 15px;
+          margin: 20px auto;
+          width: 300px;
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          font-family: Arial, sans-serif;
+          font-size: 16px;
+      }
 
         .profile-option {
           background-color: rgb(72, 71, 71);
@@ -713,7 +738,7 @@ html {
         gap: 10px;
 
         img {
-          width: 100%;
+          width:300px;
           height: 200px;
           object-fit: cover;
         }
@@ -935,6 +960,7 @@ html {
 
         button {
           position: relative;
+          
           background-color: #007bff;
           color: white;
           border: none;
@@ -1018,6 +1044,7 @@ html {
           }
 
           button {
+            right: 0;
             background-color: #28a745;
             color: white;
             border: none;

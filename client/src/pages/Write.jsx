@@ -14,7 +14,7 @@ const Write = () => {
   const [content, setContent] = useState(state?.desc || "");
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState(state?.cat || "");
-  const [img, setImg] = useState(state?.img || "");
+  const [img, setImg] = useState(state?.img || null);
 
   const navigate = useNavigate();
 

@@ -18,7 +18,6 @@ const Profile = () => {
             </div>
         );
     }
-
     return (
         <div className="profile">
             <div className="header">
@@ -29,6 +28,12 @@ const Profile = () => {
                 <h2>Información del Usuario</h2>
                 <p>Nombre: {currentUser.username}</p>
                 <p>Correo: {currentUser.email} </p>
+                {currentUser && currentUser.visible!=1 &&(
+                    <div className='warning'>
+                    <p>Su cuente esta en proceso de verificación.</p>
+                    <p>Si sus datos tienen contenido sensible no podrá comentar y no aparecerá como autor de sus posts.</p>
+                    </div>
+                )}
                 <h2>Opciones de Perfil</h2>
                 <ul>
                     <li>

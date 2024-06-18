@@ -105,7 +105,7 @@ const Single = () => {
   const handleSaveEdit = async () => {
     try {
       const formattedDate = moment().format('YYYY-MM-DD HH:mm:ss');
-      const edit="Editado: ";
+      const edit = "Editado: ";
       await axios.put(`http://localhost:8080/api/comments/${editedComment.id}`, {
         comentario: edit + editedComment.comentario,
         date: formattedDate,
@@ -156,21 +156,29 @@ const Single = () => {
       <div className="content">
         <img src={`../upload/${post.img}`} alt="" />
         <div className="user">
-          <Link to={`/user/${post.uid}/posts`}>
-            <img src={post.userImg ? `../upload/${post.userImg}` : DefaultUserImg} alt="" />
-          </Link>
-          <div className="info">
-            <Link to={`/user/${post.uid}/posts`} className="username-link">
-              <span>{post.username}</span>
+
+          {post && post.visible === 1 && (<div>
+            <Link to={`/user/${post.uid}/posts`}>
+              <img src={post.userImg ? `../upload/${post.userImg}` : DefaultUserImg} alt="" />
             </Link>
-            <p className="fecha">Posted {moment(post.date).fromNow()}</p>
-          </div>
-          {currentUser && currentUser.username === post.username && (
-            <div className="edit">
-              <Link to={`/write?edit=${post.id}`} state={post}>
-                <img src={Edit} alt="Edit" />
+            <div className="info">
+              <Link to={`/user/${post.uid}/posts`} className="username-link">
+                <span>{post.username}</span>
               </Link>
-              <img onClick={handleDelete} src={Delete} alt="Delete" />
+
+            </div>
+          </div>)}
+          <p className="fecha">Posted {moment(post.date).fromNow()}</p>
+          {currentUser && (
+            <div className="edit">
+              {currentUser.username === post.username && (
+                <Link to={`/write?edit=${post.id}`} state={post}>
+                  <img src={Edit} alt="Edit" />
+                </Link>
+              )}
+              {((currentUser.username === post.username) || (currentUser.mod === 1)) && (
+                <img onClick={handleDelete} src={Delete} alt="Delete" />
+              )}
             </div>
           )}
         </div>
@@ -215,12 +223,14 @@ const Single = () => {
                 ) : (
                   <div>
                     <p>{comment.comentario}</p>
-                    {currentUser && currentUser.id === comment.uid && (
-                      <div className="comment-actions">
+                    <div className="comment-actions">
+                      {currentUser && currentUser.id === comment.uid && (
                         <img src={Edit} alt="Edit" onClick={() => handleEditClick(comment)} />
+                      )}
+                      {((currentUser.username === post.username) || (currentUser.mod === 1)) && (
                         <img onClick={() => handleDeleteComment(comment.id)} src={Delete} alt="Delete" />
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
