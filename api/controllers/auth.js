@@ -46,6 +46,7 @@ export const login = (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'Strict',
+      maxAge: 3600000
     })
       .status(200)
       .json(other);
