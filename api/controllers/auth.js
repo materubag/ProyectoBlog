@@ -44,9 +44,7 @@ export const login = (req, res) => {
 
     res.cookie("access_token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'Strict',
-      maxAge: 3600000
+      secure: process.env.NODE_ENV === 'production'
     })
       .status(200)
       .json(other);
