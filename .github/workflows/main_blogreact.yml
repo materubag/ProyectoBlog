@@ -9,15 +9,15 @@ on:
 jobs:
   construir-y-desplegar-cliente:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Obtener código
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       
       - name: Configurar versión de Node.js para el cliente
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '20.x'
 
       - name: Instalar dependencias del cliente
         working-directory: client
@@ -36,15 +36,15 @@ jobs:
 
   construir-y-desplegar-api:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Obtener código
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       
       - name: Configurar versión de Node.js para la API
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '20.x'
 
       - name: Instalar dependencias de la API
         working-directory: api
