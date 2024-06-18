@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon index.js"
     "build": "npm run clean && npm run build:prod",
-    "build:prod": "webpack --config webpack.prod.js",
+    "build:prod": "webpack --config webpack.prod.js"
   },
   "keywords": [],
   "author": "",
