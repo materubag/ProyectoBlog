@@ -28,7 +28,7 @@ jobs:
         run: npm run build --if-present
 
       - name: Iniciar sesión en Azure
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4754398BA287499E91E3FEDE9A1F47AE }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7ED18A61995F43078382E6AB75DBBCB5 }}
@@ -62,7 +62,7 @@ jobs:
         run: npm run build --if-present
 
       - name: Iniciar sesión en Azure
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4754398BA287499E91E3FEDE9A1F47AE }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7ED18A61995F43078382E6AB75DBBCB5 }}
