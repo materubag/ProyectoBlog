@@ -2,8 +2,6 @@ import { db } from "../db.js";
 
 export const getInvisibleUsers = (req, res) => {
   const userId = req.user.id;
-  console.log(req);
-  console.log(req.user);
   const sql = 'SELECT * FROM users WHERE visible = 0 AND id != ?';
   db.query(sql, [userId], (err, results) => {
     if (err) {
@@ -61,7 +59,6 @@ export const updateVisibleUser = (req, res) => {
       console.error("Database error:", err);
       return res.status(500).json(err);
     }
-    console.log(`User with ID ${userId} visibility updated`);
     res.json(`User with ID ${userId} visibility updated.`);
   });
 };
@@ -77,7 +74,6 @@ export const updateVisiblePost = (req, res) => {
       console.error("Database error:", err);
       return res.status(500).json(err);
     }
-    console.log(`Post with ID ${postId} visibility updated`);
     res.json(`Post with ID ${postId} visibility updated.`);
   });
 };
@@ -93,7 +89,6 @@ export const updateVisibleComment = (req, res) => {
       console.error("Database error:", err);
       return res.status(500).json(err);
     }
-    console.log(`Comment with ID ${commentId} visibility updated`);
     res.json(`Comment with ID ${commentId} visibility updated.`);
   });
 };
@@ -109,7 +104,6 @@ export const updateMod = (req, res) => {
       console.error("Database error:", err);
       return res.status(500).json(err);
     }
-    console.log(`User with ID ${userId} mod updated`);
     res.json(`User with ID ${userId} mod updated.`);
   });
 };

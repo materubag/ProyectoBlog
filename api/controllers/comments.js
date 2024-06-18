@@ -45,13 +45,21 @@ export const deleteComment = (req, res) => {
         if (err) return res.status(403).json("Token is not valid!");
 
         const commentId = req.params.id;
-        const q = "DELETE FROM comments WHERE `id` = ? AND `uid` = ?";
+        if (userInfo.mod === 1) {
+            const q = "DELETE FROM comments WHERE `id` = ?";
+            db.query(q, [commentId], (err, data) => {
+                if (err) return res.status(403).json("Failed to delete comment!");
 
-        db.query(q, [commentId, userInfo.id], (err, data) => {
-            if (err) return res.status(403).json("You can delete only your comment!");
+                return res.json("Comment has been deleted!");
+            });
+        } else {
+            const q = "DELETE FROM comments WHERE `id` = ? AND `uid` = ?";
+            db.query(q, [commentId, userInfo.id], (err, data) => {
+                if (err) return res.status(403).json("You can delete only your comment!");
 
-            return res.json("Comment has been deleted!");
-        });
+                return res.json("Comment has been deleted!");
+            });
+        }
     });
 };
 

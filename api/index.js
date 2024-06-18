@@ -43,9 +43,7 @@ app.delete("/api/delete-image/:filename", (req, res) => {
     if (err) {
       console.error("Error al eliminar la imagen:", err);
       res.status(500).json({ error: "Error al eliminar la imagen" });
-    } else {
-      res.status(200).json({ message: "Imagen eliminada correctamente" });
-    }
+    } 
   });
 });
 

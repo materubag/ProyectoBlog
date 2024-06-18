@@ -39,7 +39,7 @@ export const login = (req, res) => {
     if (!isPasswordCorrect)
       return res.status(400).json("Usuario o contraseña incorrectos");
 
-    const token = jwt.sign({ id: data[0].id }, "jwtkeyyyyyy");
+    const token = jwt.sign({ id: data[0].id,mod: data[0].mod }, "jwtkeyyyyyy");
     const { password,telf, ...other } = data[0];
 
     res.cookie("access_token", token, {
