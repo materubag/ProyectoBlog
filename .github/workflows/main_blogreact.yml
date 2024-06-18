@@ -20,11 +20,11 @@ jobs:
           node-version: '14'
 
       - name: Install client dependencies
-        working-directory: ProyectoBlog/client
+        working-directory: ./ProyectoBlog/client
         run: npm install
 
       - name: Build client
-        working-directory: ProyectoBlog/client
+        working-directory: ./ProyectoBlog/client
         run: npm run build --if-present
 
       - name: Deploy client to Azure Web App
@@ -32,7 +32,7 @@ jobs:
         with:
           app-name: 'blogreact-client'  # Nombre de la aplicación en Azure para el cliente
           slot-name: 'Production'  # Nombre del slot en Azure si aplica
-          package: ProyectoBlog/client
+          package: ./ProyectoBlog/client
 
   build-and-deploy-api:
     runs-on: ubuntu-latest
@@ -47,11 +47,11 @@ jobs:
           node-version: '14'
 
       - name: Install api dependencies
-        working-directory: ProyectoBlog/api
+        working-directory: ./ProyectoBlog/api
         run: npm install
 
       - name: Build api
-        working-directory: ProyectoBlog/api
+        working-directory: ./ProyectoBlog/api
         run: npm run build --if-present
 
       - name: Deploy api to Azure Web App
@@ -59,4 +59,4 @@ jobs:
         with:
           app-name: 'blogreact-api'  # Nombre de la aplicación en Azure para la API
           slot-name: 'Production'  # Nombre del slot en Azure si aplica
-          package: ProyectoBlog/api
+          package: ./ProyectoBlog/api
