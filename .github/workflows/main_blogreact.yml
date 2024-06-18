@@ -20,12 +20,12 @@ jobs:
           node-version: '14'
 
       - name: Instalar dependencias del cliente
-        working-directory: ProyectoBlog/client
-        run: yarn install
+        working-directory: ProyectoBlogt
+        run: npm install
 
       - name: Construir cliente
         working-directory: ProyectoBlog/client
-        run: yarn build
+        run: npm run build --if-present
 
       - name: Desplegar cliente en Azure Web App
         uses: azure/webapps-deploy@v2
@@ -48,11 +48,11 @@ jobs:
 
       - name: Instalar dependencias de la API
         working-directory: ProyectoBlog/api
-        run: yarn install
+        run: npm install
 
       - name: Construir API
         working-directory: ProyectoBlog/api
-        run: yarn build
+        run: npm run build --if-present
 
       - name: Desplegar API en Azure Web App
         uses: azure/webapps-deploy@v2
