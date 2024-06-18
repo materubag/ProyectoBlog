@@ -1,4 +1,4 @@
-name: Build and deploy Node.js apps to Azure
+name: Construir y desplegar aplicaciones Node.js en Azure
 
 on:
   push:
@@ -7,56 +7,56 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy-client:
+  construir-y-desplegar-cliente:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
+      - name: Obtener código
         uses: actions/checkout@v2
       
-      - name: Set up Node.js version for client
+      - name: Configurar versión de Node.js para el cliente
         uses: actions/setup-node@v2
         with:
           node-version: '14'
 
-      - name: Install client dependencies
-        working-directory: ./ProyectoBlog/client
+      - name: Instalar dependencias del cliente
+        working-directory: ProyectoBlog/client
         run: npm install
 
-      - name: Build client
-        working-directory: ./ProyectoBlog/client
+      - name: Construir cliente
+        working-directory: ProyectoBlog/client
         run: npm run build --if-present
 
-      - name: Deploy client to Azure Web App
+      - name: Desplegar cliente en Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'blogreact-client'  # Nombre de la aplicación en Azure para el cliente
           slot-name: 'Production'  # Nombre del slot en Azure si aplica
-          package: ./ProyectoBlog/client
+          package: ProyectoBlog/client
 
-  build-and-deploy-api:
+  construir-y-desplegar-api:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
+      - name: Obtener código
         uses: actions/checkout@v2
       
-      - name: Set up Node.js version for api
+      - name: Configurar versión de Node.js para la API
         uses: actions/setup-node@v2
         with:
           node-version: '14'
 
-      - name: Install api dependencies
-        working-directory: ./ProyectoBlog/api
+      - name: Instalar dependencias de la API
+        working-directory: ProyectoBlog/api
         run: npm install
 
-      - name: Build api
-        working-directory: ./ProyectoBlog/api
+      - name: Construir API
+        working-directory: ProyectoBlog/api
         run: npm run build --if-present
 
-      - name: Deploy api to Azure Web App
+      - name: Desplegar API en Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'blogreact-api'  # Nombre de la aplicación en Azure para la API
           slot-name: 'Production'  # Nombre del slot en Azure si aplica
-          package: ./ProyectoBlog/api
+          package: ProyectoBlog/api
