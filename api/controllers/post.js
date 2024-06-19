@@ -1,5 +1,4 @@
 import { db } from "../db.js";
-import jwt from "jsonwebtoken";
 
 export const getPosts = (req, res) => {
   const q = req.query.cat ? "SELECT * FROM posts WHERE cat=? AND visible=1" : "SELECT * FROM posts WHERE visible=1";
@@ -11,7 +10,7 @@ export const getPosts = (req, res) => {
   });
 };
 
-export const getPost = (req, res) => { 
+export const getPost = (req, res) => {
   const q =
     "SELECT p.id, `username`, `title`, `desc`, p.img, u.visible,u.img AS userImg, `cat`,`date`,`uid` FROM users u JOIN posts p ON u.id = p.uid WHERE p.id = ? AND p.visible = 1 ";
 
@@ -33,63 +32,46 @@ export const getPostsByUser = (req, res) => {
 };
 
 export const addPost = (req, res) => {
-  const token = req.cookies.access_token;
-  if (!token) return res.status(401).json("Not authenticated!");
+  const q =
+    "INSERT INTO posts(`title`, `desc`, `img`, `cat`, `date`,`uid`) VALUES (?)";
 
-  jwt.verify(token, "jwtkeyyyyyy", (err, userInfo) => {
-    if (err) return res.status(403).json("Token is not valid!");
+  const values = [
+    req.body.title,
+    req.body.desc,
+    req.body.img,
+    req.body.cat,
+    req.body.date,
+    req.params.id,
+  ];
 
-    const q =
-      "INSERT INTO posts(`title`, `desc`, `img`, `cat`, `date`,`uid`) VALUES (?)";
-
-    const values = [
-      req.body.title,
-      req.body.desc,
-      req.body.img,
-      req.body.cat,
-      req.body.date,
-      userInfo.id,
-    ];
-
-    db.query(q, [values], (err, data) => {
-      if (err) return res.status(500).json(err);
-      return res.json("Post has been created.");
-    });
+  db.query(q, [values], (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.json("Post has been created.");
   });
 };
 
 export const deletePost = (req, res) => {
-  const token = req.cookies.access_token;
-  if (!token) return res.status(401).json("Not authenticated!");
+  const postId = req.params.id;
+  const mod = req.body.mod;
+  const id = req.body.id;
+  if (mod === 1) {
+    const q = "DELETE FROM posts WHERE `id` = ?";
+    db.query(q, [postId], (err, data) => {
+      if (err) return res.status(403).json("Failed to delete post!");
 
-  jwt.verify(token, "jwtkeyyyyyy", (err, userInfo) => {
-      if (err) return res.status(403).json("Token is not valid!");
-      
-      const postId = req.params.id;
-      if (userInfo.mod === 1) {
-          const q = "DELETE FROM posts WHERE `id` = ?";
-          db.query(q, [postId], (err, data) => {
-              if (err) return res.status(403).json("Failed to delete post!");
+      return res.json("Post has been deleted!");
+    });
+  } else {
+    const q = "DELETE FROM posts WHERE `id` = ? AND `uid` = ?";
+    db.query(q, [postId, id], (err, data) => {
+      if (err) return res.status(403).json("You can delete only your post!");
 
-              return res.json("Post has been deleted!");
-          });
-      } else {
-          const q = "DELETE FROM posts WHERE `id` = ? AND `uid` = ?";
-          db.query(q, [postId, userInfo.id], (err, data) => {
-              if (err) return res.status(403).json("You can delete only your post!");
-
-              return res.json("Post has been deleted!");
-          });
-      }
-  });
+      return res.json("Post has been deleted!");
+    });
+  }
 };
 
 export const updatePost = (req, res) => {
-  const token = req.cookies.access_token;
-  if (!token) return res.status(401).json("Not authenticated!");
-
-  jwt.verify(token, "jwtkeyyyyyy", (err, userInfo) => {
-    if (err) return res.status(403).json("Token is not valid!");
 
     const postId = req.params.id;
     const q =
@@ -97,9 +79,8 @@ export const updatePost = (req, res) => {
 
     const values = [req.body.title, req.body.desc, req.body.img, req.body.cat];
 
-    db.query(q, [...values, postId, userInfo.id], (err, data) => {
+    db.query(q, [...values, postId, req.body.currentId], (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json("Post has been updated.");
     });
-  });
 };

@@ -1,32 +1,10 @@
-import jwt from 'jsonwebtoken';
 import { db } from './db.js';
 
-const JWT_SECRET = "jwtkeyyyyyy";
-
-export const verifyToken = (req, res, next) => {
-  const token = req.cookies.access_token;
-  console.log(token);
-//  if (!token) {
-   /// return res.status(401).json("Not authenticated!");
-//  }
-
-  jwt.verify(token, JWT_SECRET, (err, user) => {
-    console.log(user);
-    if (err) {
-      console.log("Error verifying token:", err);
-      return res.status(403).json("Token is not valid!");
-    }
-    console.log(user);
-    req.user = user; // Cambiar userInfo a user
-    next();
-  });
-};
-
 export const checkIfMod = (req, res, next) => {
-  const userId = req.user.id; // Cambiar userInfo a user
-  
-  const sql = "SELECT mod FROM users WHERE id = ?";
-  db.query(sql, [userId], (err, results) => {
+  const currentId  = req.params.id;
+
+  const sql = 'SELECT `mod` FROM users WHERE id = ?';
+  db.query(sql, [currentId], (err, results) => {
     if (err) {
       console.log("Database error:", err);
       return res.status(500).json(err);
@@ -35,7 +13,6 @@ export const checkIfMod = (req, res, next) => {
     if (results.length > 0 && results[0].mod === 1) {
       next();
     } else {
-      console.log("User is not a mod");
       res.status(403).json("User is not a mod");
     }
   });

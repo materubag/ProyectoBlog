@@ -1,8 +1,9 @@
 import { db } from "../db.js";
 
 export const getInvisibleUsers = (req, res) => {
+  const userId = req.params.id;
   const sql = 'SELECT * FROM users WHERE visible = 0 AND id != ?';
-  db.query(sql, [1], (err, results) => {
+  db.query(sql, [userId], (err, results) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(500).json(err);
@@ -12,7 +13,7 @@ export const getInvisibleUsers = (req, res) => {
 };
 
 export const getInvisiblePosts = (req, res) => {
-  const userId = req.user.id;
+  const userId = req.params.id;
   const sql = 'SELECT * FROM posts WHERE visible = 0 AND uid != ?';
   db.query(sql, [userId], (err, results) => {
     if (err) {
@@ -24,7 +25,7 @@ export const getInvisiblePosts = (req, res) => {
 };
 
 export const getInvisibleComments = (req, res) => {
-  const userId = req.user.id;
+  const userId = req.params.id;
   const sql = 'SELECT * FROM comments WHERE visible = 0 AND uid != ?';
   db.query(sql, [userId], (err, results) => {
     if (err) {
@@ -36,7 +37,7 @@ export const getInvisibleComments = (req, res) => {
 };
 
 export const getModReq = (req, res) => {
-  const userId = req.user.id;
+  const userId = req.params.id;
   const sql = 'SELECT * FROM users WHERE `mod` = 0 AND telf IS NOT NULL AND id != ?';
   db.query(sql, [userId], (err, results) => {
     if (err) {
@@ -49,8 +50,8 @@ export const getModReq = (req, res) => {
 
 export const updateVisibleUser = (req, res) => {
   console.log("updateVisibleUser called");
-
-  const userId = req.params.id;
+  
+  const userId = req.body.userId;
   const sql = 'UPDATE users SET visible = 1 WHERE id = ?';
 
   db.query(sql, [userId], (err, results) => {
@@ -65,7 +66,7 @@ export const updateVisibleUser = (req, res) => {
 export const updateVisiblePost = (req, res) => {
   console.log("updateVisiblePost called");
 
-  const postId = req.params.id;
+  const postId = req.body.postId;
   const sql = 'UPDATE posts SET visible = 1 WHERE id = ?';
 
   db.query(sql, [postId], (err, results) => {
@@ -80,7 +81,7 @@ export const updateVisiblePost = (req, res) => {
 export const updateVisibleComment = (req, res) => {
   console.log("updateVisibleComment called");
 
-  const commentId = req.params.id;
+  const commentId = req.body.commentId;
   const sql = 'UPDATE comments SET visible = 1 WHERE id = ?';
 
   db.query(sql, [commentId], (err, results) => {
@@ -95,7 +96,7 @@ export const updateVisibleComment = (req, res) => {
 export const updateMod = (req, res) => {
   console.log("updateMod called");
 
-  const userId = req.params.id;
+  const userId = req.body.userId;
   const sql = 'UPDATE users SET `mod` = 1 WHERE id = ?';
 
   db.query(sql, [userId], (err, results) => {

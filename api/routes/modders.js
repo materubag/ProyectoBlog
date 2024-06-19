@@ -1,5 +1,5 @@
 import express from "express";
-import { verifyToken, checkIfMod } from "../authMiddleware.js";
+import { checkIfMod } from "../authMiddleware.js";
 import {
   getInvisibleUsers,
   getInvisiblePosts,
@@ -13,13 +13,13 @@ import {
 
 const router = express.Router();
 
-router.get("/invisible-users", getInvisibleUsers);
-router.get("/invisible-posts", verifyToken, checkIfMod, getInvisiblePosts);
-router.get("/invisible-comments",verifyToken, checkIfMod, getInvisibleComments);
-router.get("/mod-req", verifyToken, checkIfMod, getModReq);
-router.put("/update-visible-user/:id", verifyToken, checkIfMod, updateVisibleUser);
-router.put("/update-visible-post/:id", verifyToken, checkIfMod, updateVisiblePost);
-router.put("/update-visible-comment/:id", verifyToken, checkIfMod, updateVisibleComment);
-router.put("/update-mod/:id", verifyToken, checkIfMod, updateMod);
+router.get("/invisible-users/:id",  checkIfMod, getInvisibleUsers);
+router.get("/invisible-posts/:id", checkIfMod, getInvisiblePosts);
+router.get("/invisible-comments/:id",  checkIfMod, getInvisibleComments);
+router.get("/mod-req/:id",   getModReq);
+router.put("/update-visible-user/:id",  checkIfMod, updateVisibleUser);
+router.put("/update-visible-post/:id",  checkIfMod, updateVisiblePost);
+router.put("/update-visible-comment/:id",  checkIfMod, updateVisibleComment);
+router.put("/update-mod/:id",  checkIfMod, updateMod);
 
 export default router;
