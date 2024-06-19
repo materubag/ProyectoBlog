@@ -11,11 +11,12 @@ export const verifyToken = (req, res, next) => {
 //  }
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
+    console.log(user);
     if (err) {
       console.log("Error verifying token:", err);
       return res.status(403).json("Token is not valid!");
     }
-    
+    console.log(user);
     req.user = user; // Cambiar userInfo a user
     next();
   });
