@@ -19,6 +19,7 @@ const Moderation = () => {
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
+  const currentId=currentUser.id;
 
   useEffect(() => {
     if (!currentUser || currentUser.mod !== 1) {
@@ -29,7 +30,7 @@ const Moderation = () => {
 
   const fetchInvisibleUsers = async () => {
     try {
-      const res = await axios.get(`${BACK_URL}/api/modders/invisible-users`, {
+      const res = await axios.get(`${BACK_URL}/api/modders/invisible-users/${currentId}`, {
         withCredentials: true
       });
       setInvisibleUsers(res.data);
@@ -41,7 +42,7 @@ const Moderation = () => {
 
   const fetchInvisiblePosts = async () => {
     try {
-      const res = await axios.get(`${BACK_URL}/api/modders/invisible-posts`, {
+      const res = await axios.get(`${BACK_URL}/api/modders/invisible-posts/${currentId}`, {
         withCredentials: true
       });
       setInvisiblePosts(res.data);
@@ -53,19 +54,19 @@ const Moderation = () => {
 
   const fetchInvisibleComments = async () => {
     try {
-      const res = await axios.get(`${BACK_URL}/api/modders/invisible-comments`, {
+      const res = await axios.get(`${BACK_URL}/api/modders/invisible-comments/${currentId}`, {
         withCredentials: true
       });
       setInvisibleComments(res.data);
       setHasInvisibleComments(res.data.length > 0);
     } catch (err) {
-      console.error('Error fetching invisible comments:', err);
+      console.err('Error fetching invisible comments:', err);
     }
   };
 
   const fetchModReq = async () => {
     try {
-      const res = await axios.get(`${BACK_URL}/api/modders/mod-req`, {
+      const res = await axios.get(`${BACK_URL}/api/modders/mod-req/${currentId}`, {
         withCredentials: true
       });
       setModReq(res.data);
@@ -77,7 +78,7 @@ const Moderation = () => {
 
   const approveUser = async (userId) => {
     try {
-      await axios.put(`${BACK_URL}/api/modders/update-visible-user/${userId}`, null, {
+      await axios.put(`${BACK_URL}/api/modders/update-visible-user/${currentId}`,{userId}, {
         withCredentials: true
       });
       fetchInvisibleUsers();
@@ -88,7 +89,7 @@ const Moderation = () => {
 
   const approvePost = async (postId) => {
     try {
-      await axios.put(`${BACK_URL}/api/modders/update-visible-post/${postId}`, null, {
+      await axios.put(`${BACK_URL}/api/modders/update-visible-post/${currentId}`,{postId} , {
         withCredentials: true
       });
       fetchInvisiblePosts();
@@ -99,7 +100,7 @@ const Moderation = () => {
 
   const approveComment = async (commentId) => {
     try {
-      await axios.put(`${BACK_URL}/api/modders/update-visible-comment/${commentId}`, null, {
+      await axios.put(`${BACK_URL}/api/modders/update-visible-comment/${currentId}`, {commentId} ,{
         withCredentials: true
       });
       fetchInvisibleComments();
@@ -110,7 +111,7 @@ const Moderation = () => {
 
   const approveModReq = async (userId) => {
     try {
-      await axios.put(`${BACK_URL}/api/modders/update-mod/${userId}`, null, {
+      await axios.put(`${BACK_URL}/api/modders/update-mod/${currentId}`, {userId}, {
         withCredentials: true
       });
       fetchModReq();

@@ -17,12 +17,12 @@ const Single = () => {
   const [newComment, setNewComment] = useState('');
   const [editMode, setEditMode] = useState(false);
   const [editedComment, setEditedComment] = useState({});
-
   const location = useLocation();
   const navigate = useNavigate();
   const postId = location.pathname.split("/")[2];
   const { currentUser } = useContext(AuthContext);
-
+  const id=currentUser.id;
+  const mod=currentUser.mod;
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -49,7 +49,7 @@ const Single = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`${BACK_URL}/api/posts/${postId}`);
+      await axios.delete(`${BACK_URL}/api/posts/${postId}`,{id,mod});
       navigate("/");
     } catch (err) {
       console.log("Error deleting post: " + err);

@@ -8,7 +8,7 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [isMobile, setIsMobile] = useState(false); // Estado para detectar si es móvil
   const cat = useLocation().search;
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {

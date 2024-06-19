@@ -16,7 +16,7 @@ const Write = () => {
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState(state?.cat || "");
   const [img, setImg] = useState(state?.img || null);
-
+ const currentId= currentUser.id;
   const navigate = useNavigate();
 
   const upload = async () => {
@@ -67,13 +67,15 @@ const Write = () => {
           desc: content,
           cat,
           img: finalImg,
+          currentId,
         })
-        : await axios.post(`${BACK_URL}/api/posts/`, {
+        : await axios.post(`${BACK_URL}/api/posts/${currentId}`, {
           title,
           desc: content,
           cat,
           img: finalImg,
           date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+          
         });
       navigate("/");
     } catch (err) {
