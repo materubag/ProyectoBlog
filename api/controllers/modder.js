@@ -1,7 +1,6 @@
 import { db } from "../db.js";
 
 export const getInvisibleUsers = (req, res) => {
-  const userId = req.user.id;
   const sql = 'SELECT * FROM users WHERE visible = 0 AND id != ?';
   db.query(sql, [1], (err, results) => {
     if (err) {
