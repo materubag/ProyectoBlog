@@ -63,7 +63,7 @@ app.use('/api/posts', postRoutes);
 app.use('/api/comments', commentRoutes);
 
 // Servir archivos estáticos del cliente
-app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, '../client')));
 
 app.get('/test', (req, res) => {
   res.json('Funciona');
@@ -71,7 +71,7 @@ app.get('/test', (req, res) => {
 
 // Maneja todas las rutas para una SPA
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
 app.listen(PORT, () => {
