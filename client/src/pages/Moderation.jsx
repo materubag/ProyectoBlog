@@ -41,7 +41,7 @@ const Moderation = () => {
 
   const fetchInvisiblePosts = async () => {
     try {
-      const res = await axios.get('/api/modders/invisible-posts', {
+      const res = await axios.get(`${BACK_URL}/api/modders/invisible-posts`, {
         withCredentials: true
       });
       setInvisiblePosts(res.data);
