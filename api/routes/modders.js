@@ -13,7 +13,7 @@ import {
 
 const router = express.Router();
 
-router.get("/invisible-users", verifyToken, checkIfMod, getInvisibleUsers);
+router.get("/invisible-users", getInvisibleUsers);
 router.get("/invisible-posts", verifyToken, checkIfMod, getInvisiblePosts);
 router.get("/invisible-comments",verifyToken, checkIfMod, getInvisibleComments);
 router.get("/mod-req", verifyToken, checkIfMod, getModReq);
