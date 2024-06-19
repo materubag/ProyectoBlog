@@ -5,7 +5,7 @@ const JWT_SECRET = "jwtkeyyyyyy";
 
 export const verifyToken = (req, res, next) => {
   const token = req.cookies.access_token;
-
+  console.log(token);
   if (!token) {
     console.log("No token provided");
     return res.status(401).json("Not authenticated!");
