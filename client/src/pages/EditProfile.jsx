@@ -137,8 +137,8 @@ const EditProfile = () => {
           <span className="file-input-text">Choose File</span>
         </label>
         <button type="submit">Save Changes</button>
-        {err && <p>{err}</p>}
-        {msg && <p>{msg}</p>}
+        {err && <p className="error">{err}</p>}
+        {msg && <p className="msg">{msg}</p>}
       </form>
     </div>
   );

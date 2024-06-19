@@ -938,6 +938,18 @@ html {
             background-color: #0056b3;
           }
         }
+        .error {
+          background-color: #ffdce0;  
+          color: #ffffff;          
+          padding: 10px;           
+          border-radius: 10px;      
+        }
+        .msg {
+          background-color: #8dd581;  
+          color: #ffffff;    
+          padding: 8px;              
+          border-radius: 10px;        
+        }
       }
     }
 

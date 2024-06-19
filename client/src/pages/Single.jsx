@@ -8,7 +8,7 @@ import axios from "axios";
 import moment from "moment";
 import { AuthContext } from "../context/authContext";
 import DOMPurify from "dompurify";
-import {BACK_URL} from "../config.js";
+import { BACK_URL } from "../config.js";
 
 const Single = () => {
   const [post, setPost] = useState({});
@@ -21,8 +21,9 @@ const Single = () => {
   const navigate = useNavigate();
   const postId = location.pathname.split("/")[2];
   const { currentUser } = useContext(AuthContext);
-  const id=currentUser.id;
-  const mod=currentUser.mod;
+  const id = currentUser ? currentUser.id : null;
+  const mod = currentUser ? currentUser.mod : null;
+
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -49,7 +50,7 @@ const Single = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`${BACK_URL}/api/posts/${postId}`,{id,mod});
+      await axios.delete(`${BACK_URL}/api/posts/${postId}`, { id, mod });
       navigate("/");
     } catch (err) {
       console.log("Error deleting post: " + err);
@@ -68,7 +69,7 @@ const Single = () => {
     try {
       const formattedDate = moment().format('YYYY-MM-DD HH:mm:ss');
 
-      await axios.post(`${BACK_URL}/api/comments`, {
+      await axios.post(`${BACK_URL}/api/comments/${id}`, {
         comentario: newComment,
         date: formattedDate,
         postid: postId,
@@ -86,7 +87,7 @@ const Single = () => {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      await axios.delete(`${BACK_URL}/api/comments/${commentId}`);
+      await axios.delete(`${BACK_URL}/api/comments/${commentId}`, { params: { id, mod } });
       setComments(comments.filter(comment => comment.id !== commentId));
     } catch (err) {
       console.error('Error deleting comment:', err);
@@ -94,8 +95,12 @@ const Single = () => {
   };
 
   const handleEditClick = (comment) => {
+    let commentText = comment.comentario;
+    if (commentText.startsWith("Editado: ")) {
+      commentText = commentText.replace("Editado: ", "");
+    }
     setEditMode(true);
-    setEditedComment(comment);
+    setEditedComment({ ...comment, comentario: commentText });
   };
 
   const handleCancelEdit = () => {
@@ -109,7 +114,7 @@ const Single = () => {
       const edit = "Editado: ";
       await axios.put(`${BACK_URL}/api/comments/${editedComment.id}`, {
         comentario: edit + editedComment.comentario,
-        date: formattedDate,
+        id,
       });
 
       const updatedComments = await axios.get(`${BACK_URL}/api/comments/${postId}`);
@@ -157,18 +162,18 @@ const Single = () => {
       <div className="content">
         <img src={`${BACK_URL}/images/${post.img}`} alt="" />
         <div className="user">
-
-          {post && post.visible === 1 && (<div>
-            <Link to={`/user/${post.uid}/posts`}>
-              <img src={post.userImg ? `${BACK_URL}/images/${post.userImg}` : DefaultUserImg} alt="" />
-            </Link>
-            <div className="info">
-              <Link to={`/user/${post.uid}/posts`} className="username-link">
-                <span>{post.username}</span>
+          {post && post.visible === 1 && (
+            <div>
+              <Link to={`/user/${post.uid}/posts`}>
+                <img src={post.userImg ? `${BACK_URL}/images/${post.userImg}` : DefaultUserImg} alt="" />
               </Link>
-
+              <div className="info">
+                <Link to={`/user/${post.uid}/posts`} className="username-link">
+                  <span>{post.username}</span>
+                </Link>
+              </div>
             </div>
-          </div>)}
+          )}
           <p className="fecha">Posted {moment(post.date).fromNow()}</p>
           {currentUser && (
             <div className="edit">
@@ -214,7 +219,8 @@ const Single = () => {
                 </div>
                 {editMode && editedComment.id === comment.id ? (
                   <div className="edit-area">
-                    <textarea className="texto"
+                    <textarea
+                      className="texto"
                       value={editedComment.comentario}
                       onChange={(e) => setEditedComment({ ...editedComment, comentario: e.target.value })}
                     />

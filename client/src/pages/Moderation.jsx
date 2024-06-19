@@ -19,7 +19,7 @@ const Moderation = () => {
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
-  const currentId=currentUser.id;
+  const currentId = currentUser ? currentUser.id : null;
 
   useEffect(() => {
     if (!currentUser || currentUser.mod !== 1) {

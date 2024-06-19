@@ -16,7 +16,9 @@ const Write = () => {
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState(state?.cat || "");
   const [img, setImg] = useState(state?.img || null);
- const currentId= currentUser.id;
+  
+  const currentId = currentUser ? currentUser.id : null;
+ 
   const navigate = useNavigate();
 
   const upload = async () => {
