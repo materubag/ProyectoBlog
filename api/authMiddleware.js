@@ -25,7 +25,7 @@ export const verifyToken = (req, res, next) => {
 export const checkIfMod = (req, res, next) => {
   const userId = req.user.id; // Cambiar userInfo a user
   
-  const sql = 'SELECT `mod` FROM users WHERE id = ?';
+  const sql = "SELECT mod FROM users WHERE id = ?";
   db.query(sql, [userId], (err, results) => {
     if (err) {
       console.log("Database error:", err);
