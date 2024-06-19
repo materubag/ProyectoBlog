@@ -25,7 +25,7 @@ const Menu = ({ cat, excludeId }) => {
         .filter(post => post.id !== Number(excludeId))  // Filtra el post actual
         .map((post) => (
           <div className="post" key={post.id}>
-            <img src={`../upload/${post?.img}`} alt="" />
+            {post.img && <img src={`${BACK_URL}/images/${post.img}`} alt="" />}
             <h2>{post.title}</h2>
             <Link className="link" to={`/post/${post.id}`}>
               <button>Leer más</button>
