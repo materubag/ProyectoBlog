@@ -75,12 +75,6 @@ export const UpdateTelf = (req, res) => {
 };
 
 export const updateProfile = (req, res) => {
-  const token = req.cookies.access_token;
-  if (!token) return res.status(401).json("No autenticado!");
-
-  jwt.verify(token, "jwtkeyyyyyy", (err, userInfo) => {
-    if (err) return res.status(403).json("El token no es válido!");
-
     const userId = req.params.id;
     const { username, newPassword, img } = req.body;
 
@@ -118,7 +112,6 @@ export const updateProfile = (req, res) => {
         return res.status(200).json("Perfil actualizado correctamente.");
       });
     });
-  });
 };
 
 
