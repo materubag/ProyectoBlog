@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
-import {BACK_URL} from "../config.js";
+import { BACK_URL } from "../config.js";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
-  const [isMobile, setIsMobile] = useState(false); // Estado para detectar si es móvil
+  const [isMobile, setIsMobile] = useState(false);
   const cat = useLocation().search;
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -21,25 +21,26 @@ const Home = () => {
     };
     fetchData();
 
-    // Función para manejar el resize y actualizar isMobile
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
 
-    // Agregar listener de resize al montar el componente
     window.addEventListener('resize', handleResize);
 
-    // Limpiar listener al desmontar el componente
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, [cat]);
+
+  const truncateDescription = (desc) => {
+    return desc.length > 350 ? `${desc.substring(0, 350)}...` : desc;
+  };
+
   return (
     <div className="home">
       <div className="posts">
         {posts.map((post) => (
           <div className="post" key={post.id}>
-            {/* Renderizado condicional para dispositivos móviles */}
             {isMobile ? (
               <div className="mobile-layout">
                 <div className="img">
@@ -49,7 +50,7 @@ const Home = () => {
                   <Link className="link" to={`/post/${post.id}`}>
                     <h1>{post.title}</h1>
                   </Link>
-                  <div dangerouslySetInnerHTML={{ __html: post.desc }} />
+                  <div dangerouslySetInnerHTML={{ __html: truncateDescription(post.desc) }} />
                   <Link className="link" to={`/post/${post.id}`}>
                     <button>Leer más</button>
                   </Link>
@@ -64,7 +65,7 @@ const Home = () => {
                   <Link className="link" to={`/post/${post.id}`}>
                     <h1>{post.title}</h1>
                   </Link>
-                  <div dangerouslySetInnerHTML={{ __html: post.desc }} />
+                  <div dangerouslySetInnerHTML={{ __html: truncateDescription(post.desc) }} />
                   <Link className="link" to={`/post/${post.id}`}>
                     <button>Leer más</button>
                   </Link>

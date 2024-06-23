@@ -1,11 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { AuthContext } from "../context/authContext";
-import {BACK_URL} from "../config.js";
+import { BACK_URL } from "../config.js";
 
 const Write = () => {
   const { currentUser } = useContext(AuthContext);
@@ -16,10 +16,31 @@ const Write = () => {
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState(state?.cat || "");
   const [img, setImg] = useState(state?.img || null);
-  
+  const [titleWarning, setTitleWarning] = useState("");
+  const [contentWarning, setContentWarning] = useState("");
+
   const currentId = currentUser ? currentUser.id : null;
- 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (title.split(' ').some(word => word.length > 35)) {
+      setTitleWarning("El título contiene una palabra que excede los 35 caracteres.");
+    } else if (title.length > 250) {
+      setTitleWarning("El título no debe exceder los 250 caracteres.");
+    } else {
+      setTitleWarning("");
+    }
+  }, [title]);
+
+  useEffect(() => {
+    if (content.split(' ').some(word => word.length > 35)) {
+      setContentWarning("La descripción contiene una palabra que excede los 35 caracteres.");
+    } else if (content.length > 1000) {
+      setContentWarning("La descripción no debe exceder los 1000 caracteres.");
+    } else {
+      setContentWarning("");
+    }
+  }, [content]);
 
   const upload = async () => {
     try {
@@ -57,6 +78,21 @@ const Write = () => {
       return;
     }
 
+    if (
+      title.split(' ').some(word => word.length > 35) ||
+      content.split(' ').some(word => word.length > 35) ||
+      title.length > 250 ||
+      content.length > 1000
+    ) {
+      alert("El título o la descripción no cumplen con las restricciones de longitud.");
+      return;
+    }
+
+    if (!title && !content) {
+      alert("El título y la descripción no pueden estar ambos vacíos.");
+      return;
+    }
+
     await deleteImage();
 
     const imgUrl = await upload();
@@ -77,7 +113,6 @@ const Write = () => {
           cat,
           img: finalImg,
           date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
-          
         });
       navigate("/");
     } catch (err) {
@@ -94,6 +129,7 @@ const Write = () => {
           placeholder="Title"
           onChange={(e) => setTitle(e.target.value)}
         />
+        {titleWarning && <p style={{ color: 'red' }}>{titleWarning}</p>}
         <div className="editorContainer">
           <ReactQuill
             value={content}
@@ -101,6 +137,7 @@ const Write = () => {
             formats={Write.formats}
           />
         </div>
+        {contentWarning && <p style={{ color: 'red' }}>{contentWarning}</p>}
       </div>
       <div className="menu">
         <div className="item">
@@ -122,72 +159,19 @@ const Write = () => {
         </div>
         <div className="item">
           <h1>Categorias</h1>
-          <div className="cat">
-            <input
-              type="radio"
-              checked={cat === 'cine'}
-              name="cat"
-              value="cine"
-              id="cine"
-              onChange={(e) => setCat(e.target.value)}
-            />
-            <label htmlFor="art">Cine</label>
-          </div>
-          <div className="cat">
-            <input
-              type="radio"
-              checked={cat === 'art'}
-              name="cat"
-              value="art"
-              id="art"
-              onChange={(e) => setCat(e.target.value)}
-            />
-            <label htmlFor="art">Arte</label>
-          </div>
-          <div className="cat">
-            <input
-              type="radio"
-              checked={cat === 'science'}
-              name="cat"
-              value="science"
-              id="science"
-              onChange={(e) => setCat(e.target.value)}
-            />
-            <label htmlFor="science">Ciencia</label>
-          </div>
-          <div className="cat">
-            <input
-              type="radio"
-              checked={cat === 'music'}
-              name="cat"
-              value="music"
-              id="music"
-              onChange={(e) => setCat(e.target.value)}
-            />
-            <label htmlFor="music">Música</label>
-          </div>
-          <div className="cat">
-            <input
-              type="radio"
-              checked={cat === 'technology'}
-              name="cat"
-              value="technology"
-              id="technology"
-              onChange={(e) => setCat(e.target.value)}
-            />
-            <label htmlFor="technology">Tecnologia</label>
-          </div>
-          <div className="cat">
-            <input
-              type="radio"
-              checked={cat === 'sports'}
-              name="cat"
-              value="sports"
-              id="sports"
-              onChange={(e) => setCat(e.target.value)}
-            />
-            <label htmlFor="sports">Deportes</label>
-          </div>
+          {['cine', 'art', 'science', 'music', 'technology', 'sports'].map(category => (
+            <div className="cat" key={category}>
+              <input
+                type="radio"
+                checked={cat === category}
+                name="cat"
+                value={category}
+                id={category}
+                onChange={(e) => setCat(e.target.value)}
+              />
+              <label htmlFor={category}>{category.charAt(0).toUpperCase() + category.slice(1)}</label>
+            </div>
+          ))}
         </div>
       </div>
     </div>

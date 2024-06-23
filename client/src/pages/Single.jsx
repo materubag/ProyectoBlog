@@ -50,10 +50,11 @@ const Single = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`${BACK_URL}/api/posts/${postId}`, { id, mod });
+
+      await axios.delete(`${BACK_URL}/api/posts/user/${postId}`,{ data:{id, mod}});
       navigate("/");
     } catch (err) {
-      console.log("Error deleting post: " + err);
+      console.log("Error al eliminar el post: " + err);
     }
   };
 
@@ -87,7 +88,7 @@ const Single = () => {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      await axios.delete(`${BACK_URL}/api/comments/${commentId}`, { params: { id, mod } });
+      await axios.delete(`${BACK_URL}/api/comments/${commentId}`,{ data:{id, mod}} );
       setComments(comments.filter(comment => comment.id !== commentId));
     } catch (err) {
       console.error('Error deleting comment:', err);

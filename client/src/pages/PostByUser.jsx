@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import {BACK_URL} from "../config.js";
+import { BACK_URL } from "../config.js";
 
 const PostByUser = () => {
   const [posts, setPosts] = useState([]);
-  const { userId } = useParams();  
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const { userId } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`${BACK_URL}/api/posts/user/${userId}`);
         setPosts(res.data);
+        setFilteredPosts(res.data); // Initial filter set to all posts
         console.log(res.data);
       } catch (err) {
         console.error("Error fetching posts by user:", err);
@@ -19,6 +23,16 @@ const PostByUser = () => {
     };
     fetchData();
   }, [userId]);
+
+  useEffect(() => {
+    // Filter logic
+    const filtered = posts.filter((post) => {
+      const matchesSearch = post.title.toLowerCase().includes(search.toLowerCase());
+      const matchesCategory = category ? post.cat === category : true;
+      return matchesSearch && matchesCategory;
+    });
+    setFilteredPosts(filtered);
+  }, [search, category, posts]);
 
   const getText = (html) => {
     const doc = new DOMParser().parseFromString(html, "text/html");
@@ -41,11 +55,30 @@ const PostByUser = () => {
 
   return (
     <div className="home">
+      <div className="filter">
+        <input
+          type="text"
+          placeholder="Buscar por título"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="">Todo</option>
+          <option value="art">Arte</option>
+          <option value="music">Musica</option>
+          <option value="science">Ciencia</option>
+          <option value="sports">Deportes</option>
+          <option value="technology">Tecnologia</option>
+        </select>
+      </div>
       <div className="posts">
-        {posts.map((post) => (
+        {filteredPosts.map((post) => (
           <div className="post" key={post.id}>
             <div className="img">
-            <img src={`${BACK_URL}/images/${post.img}`} alt="" />
+              <img src={`${BACK_URL}/images/${post.img}`} alt="" />
             </div>
             <div className="content">
               <Link className="link" to={`/post/${post.id}`}>

@@ -199,7 +199,6 @@ html {
 
       .container {
         position: relative;
-        /* Añadido para que el posicionamiento absoluto funcione correctamente */
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -306,7 +305,6 @@ html {
       .write img,
       .user img {
         width: 24px;
-        /* Reducir tamaño de las imágenes */
       }
 
       .dropdown.open {
@@ -390,7 +388,7 @@ html {
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
           font-family: Arial, sans-serif;
           font-size: 16px;
-      }
+        }
 
         .profile-option {
           background-color: rgb(72, 71, 71);
@@ -411,7 +409,37 @@ html {
     // HOME  
 
     .home {
-      
+      .filter {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .filter-input,
+      .filter-select {
+        padding: 10px;
+        border: 1px solid #000;
+        border-radius: 8px;
+        background-color: #fff;
+        color: #000;
+      }
+
+      .filter-input::placeholder {
+        color: #888;
+      }
+
+      .filter-select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+      }
+
+      .filter-select:focus,
+      .filter-input:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      }
+
       .posts {
         margin-top: 100px;
         display: flex;
@@ -480,8 +508,9 @@ html {
           }
         }
       }
+
     }
-    
+
 
     // FOOTER
     footer {
@@ -518,8 +547,7 @@ html {
       gap: 30px;
 
       img {
-        width: 100%;
-        height: 300px;
+        width: 500px;
         object-fit: cover;
       }
 
@@ -738,7 +766,7 @@ html {
         gap: 10px;
 
         img {
-          width:300px;
+          width: 300px;
           height: 200px;
           object-fit: cover;
         }
@@ -938,17 +966,19 @@ html {
             background-color: #0056b3;
           }
         }
+
         .error {
-          background-color: #ffdce0;  
-          color: #ffffff;          
-          padding: 10px;           
-          border-radius: 10px;      
+          background-color: #ffdce0;
+          color: #ffffff;
+          padding: 10px;
+          border-radius: 10px;
         }
+
         .msg {
-          background-color: #8dd581;  
-          color: #ffffff;    
-          padding: 8px;              
-          border-radius: 10px;        
+          background-color: #8dd581;
+          color: #ffffff;
+          padding: 8px;
+          border-radius: 10px;
         }
       }
     }
@@ -972,7 +1002,7 @@ html {
 
         button {
           position: relative;
-          
+
           background-color: #007bff;
           color: white;
           border: none;

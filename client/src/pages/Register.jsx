@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Logo from '../img/OIG.png';
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from 'react';
 import axios from 'axios';
-import {BACK_URL} from "../config.js";
+import { BACK_URL } from "../config.js";
 
 const Register = () => {
 
@@ -11,25 +10,36 @@ const Register = () => {
     username: "",
     email: "",
     password: "",
-  })
+  });
 
   const [err, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleChange = e => {
-    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-  }
+    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const isValidEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
 
   const handleSubmit = async e => {
     e.preventDefault();
+
+    if (!isValidEmail(inputs.email)) {
+      setError("El correo electrónico no tiene una estructura válida.");
+      return;
+    }
+
     try {
       const res = await axios.post(`${BACK_URL}/api/auth/register`, inputs);
-      console.log(res)
+      console.log(res);
       navigate("/login");
     } catch (err) {
       setError(err.response.data);
     }
-  }
+  };
 
   return (
     <div className="auth">
@@ -59,7 +69,7 @@ const Register = () => {
           name="password"
           onChange={handleChange}
         />
-        <button onClick={handleSubmit}>Login</button>
+        <button onClick={handleSubmit}>Registrarse</button>
         {err && <p className='error'>{err}</p>}
         <span>
           ¿Yá tienes una cuenta? <Link to="/login">Iniciar Sesión</Link>
@@ -70,4 +80,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default Register;
