@@ -50,23 +50,61 @@ export const addPost = (req, res) => {
   });
 };
 
+
+
 export const deletePost = (req, res) => {
   const postId = req.params.id;
-  const mod = req.body.mod;
-  const id = req.body.id;
-  if (mod === 1) {
-    const q = "DELETE FROM posts WHERE `id` = ?";
-    db.query(q, [postId], (err, data) => {
-      if (err) return res.status(403).json("Failed to delete post!");
+  const { mod, id } = req.body;
 
-      return res.json("Post has been deleted!");
+  // Verificación de parámetros
+  if (mod === undefined || id === undefined || postId === undefined) {
+    return res.status(400).json("Missing required parameters");
+  }
+  if (mod === 1) {
+    const deleteCommentsQuery = "DELETE FROM comments WHERE `postid` = ?";
+    db.query(deleteCommentsQuery, [postId], (err, data) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json("Failed to delete comments related to the post!");
+      }
+
+      const deletePostQuery = "DELETE FROM posts WHERE `id` = ?";
+      db.query(deletePostQuery, [postId], (err, data) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json("Failed to delete post!");
+        }
+
+        return res.json("Post has been deleted along with its comments!");
+      });
     });
   } else {
-    const q = "DELETE FROM posts WHERE `id` = ? AND `uid` = ?";
-    db.query(q, [postId, id], (err, data) => {
-      if (err) return res.status(403).json("You can delete only your post!");
+    const checkUserQuery = "SELECT * FROM posts WHERE `id` = ? AND `uid` = ?";
+    db.query(checkUserQuery, [postId, id], (err, data) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json("Error checking post ownership!");
+      }
 
-      return res.json("Post has been deleted!");
+      if (data.length === 0) {
+        return res.status(403).json("You can delete only your post!");
+      }
+      const deleteCommentsQuery = "DELETE FROM comments WHERE `postid` = ?";
+      db.query(deleteCommentsQuery, [postId], (err, data) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json("Failed to delete comments related to the post!");
+        }
+        const deletePostQuery = "DELETE FROM posts WHERE `id` = ? AND `uid` = ?";
+        db.query(deletePostQuery, [postId, id], (err, data) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).json("Failed to delete post!");
+          }
+
+          return res.json("Post has been deleted along with its comments!");
+        });
+      });
     });
   }
 };

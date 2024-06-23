@@ -39,7 +39,10 @@ export const deleteComment = (req, res) => {
         if (mod === 1) {
             const q = "DELETE FROM comments WHERE `id` = ?";
             db.query(q, [commentId], (err, data) => {
-                if (err) return res.status(403).json("Failed to delete comment!");
+                if (err) {
+                    console.log(err)
+                    return res.status(403).json("Failed to delete comment!");
+                }
 
                 return res.json("Comment has been deleted!");
             });
