@@ -178,7 +178,7 @@ const Single = () => {
           <p className="fecha">Posted {moment(post.date).fromNow()}</p>
           {currentUser && (
             <div className="edit">
-              {currentUser.username === post.username && (
+              {currentUser?.username === post.username && (
                 <Link to={`/write?edit=${post.id}`} state={post}>
                   <img src={Edit} alt="Edit" />
                 </Link>
