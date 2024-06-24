@@ -25,7 +25,6 @@ const Moderation = () => {
 
   useEffect(() => {
     if (!currentUser || currentUser.mod !== 1) {
-      console.log(currentUser.isMod);
       navigate('/');
     }
   }, [currentUser, navigate]);
