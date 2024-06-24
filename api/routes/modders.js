@@ -8,7 +8,10 @@ import {
   updateVisibleUser,
   updateVisiblePost,
   updateVisibleComment,
-  updateMod
+  updateMod,
+  refuseMod,
+  deletePost,
+  deleteComment
 } from "../controllers/modder.js";
 
 const router = express.Router();
@@ -21,5 +24,8 @@ router.put("/update-visible-user/:id",  checkIfMod, updateVisibleUser);
 router.put("/update-visible-post/:id",  checkIfMod, updateVisiblePost);
 router.put("/update-visible-comment/:id",  checkIfMod, updateVisibleComment);
 router.put("/update-mod/:id",  checkIfMod, updateMod);
+router.put("/refuse-mod/:id",  checkIfMod, refuseMod);
+router.delete("/:id", checkIfMod,deletePost);
+router.delete('/comment/:id', checkIfMod,deleteComment); 
 
 export default router;

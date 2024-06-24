@@ -107,3 +107,53 @@ export const updateMod = (req, res) => {
     res.json(`User with ID ${userId} mod updated.`);
   });
 };
+
+export const refuseMod = (req, res) => {
+  console.log("refuseMod called");
+
+  const userId = req.body.userId;
+  const sql = 'UPDATE users SET `telf` = NULL WHERE id = ?';
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json(err);
+    }
+    res.json(`User with ID ${userId} telf set to null.`);
+  });
+};
+
+export const deletePost = (req, res) => {
+  const postId = req.body.postId;
+    const deleteCommentsQuery = "DELETE FROM comments WHERE `postid` = ?";
+    db.query(deleteCommentsQuery, [postId], (err, data) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json("Failed to delete comments related to the post!");
+      }
+
+      const deletePostQuery = "DELETE FROM posts WHERE `id` = ?";
+      db.query(deletePostQuery, [postId], (err, data) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json("Failed to delete post!");
+        }
+
+        return res.json("Post has been deleted along with its comments!");
+      });
+    });
+};
+
+export const deleteComment = (req, res) => {
+  const commentId = req.body.commentId;
+
+      const q = "DELETE FROM comments WHERE `id` = ?";
+      db.query(q, [commentId], (err, data) => {
+          if (err) {
+              console.log(err)
+              return res.status(403).json("Failed to delete comment!");
+          }
+
+          return res.json("Comment has been deleted!");
+      });
+};
