@@ -112,13 +112,10 @@ const Navbar = () => {
           <Link className='Link' to='/?cat=music' onClick={closeDropdown}>
             <h6>Música</h6>
           </Link>
-          <Link className='Link' to='/?cat=tecnologia' onClick={closeDropdown}>
-            <h6>Tecnología</h6>
-          </Link>
-          <Link className='Link' to='/?cat=ciencia' onClick={closeDropdown}>
+          <Link className='Link' to='/?cat=science' onClick={closeDropdown}>
             <h6>Ciencia</h6>
           </Link>
-          <Link className='Link' to='/?cat=deportes' onClick={closeDropdown}>
+          <Link className='Link' to='/?cat=sports' onClick={closeDropdown}>
             <h6>Deportes</h6>
           </Link>
           <Link className='Link' to='/?cat=technology' onClick={() => handleCatChange('technology')}>

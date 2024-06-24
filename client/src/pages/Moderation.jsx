@@ -1,10 +1,12 @@
+
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import DefaultUserImg from "../img/default.png";
 import moment from "moment";
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from "../context/authContext";
-import {BACK_URL} from "../config.js";
+import { BACK_URL } from "../config.js";
+import Delete from "../img/delete.png";
 
 const Moderation = () => {
   const [invisibleUsers, setInvisibleUsers] = useState([]);
@@ -60,7 +62,7 @@ const Moderation = () => {
       setInvisibleComments(res.data);
       setHasInvisibleComments(res.data.length > 0);
     } catch (err) {
-      console.err('Error fetching invisible comments:', err);
+      console.error('Error fetching invisible comments:', err);
     }
   };
 
@@ -78,7 +80,7 @@ const Moderation = () => {
 
   const approveUser = async (userId) => {
     try {
-      await axios.put(`${BACK_URL}/api/modders/update-visible-user/${currentId}`,{userId}, {
+      await axios.put(`${BACK_URL}/api/modders/update-visible-user/${currentId}`, { userId }, {
         withCredentials: true
       });
       fetchInvisibleUsers();
@@ -89,7 +91,7 @@ const Moderation = () => {
 
   const approvePost = async (postId) => {
     try {
-      await axios.put(`${BACK_URL}/api/modders/update-visible-post/${currentId}`,{postId} , {
+      await axios.put(`${BACK_URL}/api/modders/update-visible-post/${currentId}`, { postId }, {
         withCredentials: true
       });
       fetchInvisiblePosts();
@@ -100,7 +102,7 @@ const Moderation = () => {
 
   const approveComment = async (commentId) => {
     try {
-      await axios.put(`${BACK_URL}/api/modders/update-visible-comment/${currentId}`, {commentId} ,{
+      await axios.put(`${BACK_URL}/api/modders/update-visible-comment/${currentId}`, { commentId }, {
         withCredentials: true
       });
       fetchInvisibleComments();
@@ -111,12 +113,45 @@ const Moderation = () => {
 
   const approveModReq = async (userId) => {
     try {
-      await axios.put(`${BACK_URL}/api/modders/update-mod/${currentId}`, {userId}, {
+      await axios.put(`${BACK_URL}/api/modders/update-mod/${currentId}`, { userId }, {
         withCredentials: true
       });
       fetchModReq();
     } catch (err) {
       console.error('Error approving moderator request:', err);
+    }
+  };
+
+  const deletePost = async (postId) => {
+    try {
+      await axios.delete(`${BACK_URL}/api/modders/${currentId}`, { data:{postId}},{
+        withCredentials: true
+      });
+      fetchInvisiblePosts();
+    } catch (err) {
+      console.error('Error deleting post:', err);
+    }
+  };
+
+  const deleteComment = async (commentId) => {
+    try {
+      await axios.delete(`${BACK_URL}/api/modders/comment/${currentId}`,{ data:{commentId}}, {
+        withCredentials: true
+      });
+      fetchInvisibleComments();
+    } catch (err) {
+      console.error('Error deleting comment:', err);
+    }
+  };
+
+  const refuseModReq = async (userId) => {
+    try {
+      await axios.put(`${BACK_URL}/api/modders/refuse-mod/${currentId}`, {userId},{
+        withCredentials: true
+      });
+      fetchModReq();
+    } catch (err) {
+      console.error('Error refusing moderator request:', err);
     }
   };
 
@@ -145,7 +180,6 @@ const Moderation = () => {
                   <div>
                     <button className="botones" onClick={() => approveUser(user.id)}>Aprobar</button>
                   </div>
-
                 </div>
               </div>
             ))}
@@ -164,9 +198,10 @@ const Moderation = () => {
                     )}
                   </div>
                   <div className="content">
-                    <h1>{post.title}</h1>
+                    <h1 className='titulo'>{post.title}</h1>
                     <div dangerouslySetInnerHTML={{ __html: post.desc }} />
                     <button className="botones" onClick={() => approvePost(post.id)}>Aprobar</button>
+                    <button className="eliminar" onClick={() => deletePost(post.id)}>Eliminar</button>
                   </div>
                 </div>
               ))}
@@ -195,6 +230,7 @@ const Moderation = () => {
                   {currentUser && (
                     <div className="comment-actions">
                       <button className="botones" onClick={() => approveComment(comment.id)}>Aprobar</button>
+                      <button className="eliminar" onClick={() => deleteComment(comment.id)}>Eliminar</button>
                     </div>
                   )}
                 </div>
@@ -217,8 +253,8 @@ const Moderation = () => {
                   </Link>
                   <div>
                     <button className="botones" onClick={() => approveModReq(req.id)}>Aprobar</button>
+                    <button className="eliminar" onClick={() => refuseModReq(req.id)}>Rechazar</button>
                   </div>
-
                 </div>
               </div>
             ))}
