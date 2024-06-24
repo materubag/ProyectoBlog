@@ -183,7 +183,7 @@ const Single = () => {
                   <img src={Edit} alt="Edit" />
                 </Link>
               )}
-              {((currentUser.username === post.username) || (currentUser.mod === 1)) && (
+              {((currentUser?.username === post.username) || (currentUser?.mod === 1)) && (
                 <img onClick={handleDelete} src={Delete} alt="Delete" />
               )}
             </div>
@@ -232,10 +232,10 @@ const Single = () => {
                   <div>
                     <p>{comment.comentario}</p>
                     <div className="comment-actions">
-                      {currentUser && currentUser.id === comment.uid && (
+                      {currentUser && currentUser?.id === comment.uid && (
                         <img src={Edit} alt="Edit" onClick={() => handleEditClick(comment)} />
                       )}
-                      {((currentUser.username === post.username) || (currentUser.mod === 1)) && (
+                      {((currentUser?.username === post.username) || (currentUser?.mod === 1)) && (
                         <img onClick={() => handleDeleteComment(comment.id)} src={Delete} alt="Delete" />
                       )}
                     </div>
