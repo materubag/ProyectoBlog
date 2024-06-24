@@ -22,7 +22,7 @@ export const getPost = (req, res) => {
 
 export const getPostsByUser = (req, res) => {
   const userId = req.params.userId;
-  const q = "SELECT * FROM posts WHERE uid = ?";
+  const q = "SELECT * FROM posts WHERE uid = ? AND visible=1";
 
   db.query(q, [userId], (err, data) => {
     if (err) return res.status(500).json(err);
